@@ -1,0 +1,28 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+flask = "*"
+flask-cors = "*"
+sqlalchemy = "*"
+flask-sqlalchemy = "*"
+flask-login = "*"
+arrow = "*"
+"psycopg2" = "*"
+gunicorn = "*"
+gevent = "*"
+pytest-mock = "*"
+simplejson = "*"
+
+[dev-packages]
+pytest = "*"
+pytest-mock = "*"
+pytest-cov = "*"
+requests = "*"
+piplint = "*"
+pylint = "*"
+
+[requires]
+python_version = "3.6"
