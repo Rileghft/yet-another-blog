@@ -1,0 +1,66 @@
+<!-- templates/auth/login.html -->
+
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+{% block content %}
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a href="#login" class="nav-link active" id="login-tab" data-toggle="tab">Login</a>
+    </li>
+    <li class="nav-item">
+        <a href="#register" class="nav-link" id="register-tab" data-toggle="tab">Register</a>
+    </li>
+</ul>
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning">
+        {% for msg in messages %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<div class="tab-content">
+    <div class="tab-pane fade show active" id="login">
+        <form class="form my-2" action="{{url_for('auth.login')}}" method="post">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="enter email" autofocus>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="enter password">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="remember_me">Keep me logged in</label>
+                <input type="checkbox" name="remember_me" id="remember_me">
+            </div>
+            {{form.csrf_token}}
+            <button class="btn btn-primary" type="submit">Login</button>
+        </form>
+    </div>
+    <div class="tab-pane fade" id="register">
+        <form class="form my-2" action="{{url_for('auth.register')}}" method="post" autocomplete="off">
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="username">Username</label>
+                <input type="text" name="username" id="username" placeholder="enter username" maxlength="100">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="email">Email</label>
+                <input type="email" name="email" id="email" placeholder="enter email" maxlength="254">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="password">Password</label>
+                <input type="password" name="password" id="password" placeholder="enter password" minlength="8" maxlength="40">
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label" for="confirm_password">Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password" placeholder="repeat password" minlength="8" maxlength="40">
+            </div>
+            {{form.csrf_token}}
+            <button class="btn btn-primary" type="submit">Register</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

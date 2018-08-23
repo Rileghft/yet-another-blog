@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Yet Another Blog Register Confirmation</title>
+</head>
+<body>
+    <p>Dear {{user.username}},</p>
+    <p>Welcome to join Yet Another Blog</p>
+    <p>Please click following link to activate your account</p>
+    <a href="{{url_for('auth.confirm', token=token, _external=True)}}">{{url_for('auth.confirm', token=token, _external=True)}}</a>
+    <p>If you DID NOT register Yet Another Blog account, please ignore this email and don't click above link</p>
+    <p>Sincerely,</p>
+    <p>Yet Another Blog Team</p>
+    <p>note: this email was automatically sent by system, and replies to the email are not monitered.</p>
+</body>
+</html>

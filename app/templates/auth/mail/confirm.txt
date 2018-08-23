@@ -1,0 +1,11 @@
+Dear {{user.username}},
+
+Welcome to join Yet Another Blog
+Please click following link to activate your account
+{{url_for('auth.confirm', token=token, _external=True)}}
+If you DID NOT register Yet Another Blog account, please ignore this email and don't click above link
+
+Sincerely,
+Yet Another Blog Team
+
+note: this email was automatically sent by system, and replies to the email are not monitered.
