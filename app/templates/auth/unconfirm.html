@@ -1,0 +1,19 @@
+<!--auth/unconfirm.html-->
+
+{% extends "base.html" %}
+
+{% block title %}Unconfirm account{% endblock %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning">
+        {% for msg in messages %}
+            <p>{{ msg }}</p>
+        {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<p>Please confirm your account</p>
+<p>If you don't reveive confirmation email, please <a href="{{url_for('auth.resend_confirmation')}}">click here</a> to resend confirmation.</p>
+{% endblock %}
