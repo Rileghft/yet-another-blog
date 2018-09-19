@@ -120,3 +120,52 @@ else {
         theme: 'snow'
     });
 }
+
+//comments
+$.ajax({
+    type: 'GET',
+    url: `/api/comments?post_uri=${post_uri}`,
+    headers: {
+        'X-CSRFToken': csrf_token
+    },
+    success: function (data) {
+        let comments = data['comments'];
+        comments.forEach(function(comment) {
+            let tmp = document.getElementById('comment-template').content.cloneNode(true);
+            $(tmp).find('.commenter').text(comment['author']);
+            $(tmp).find('.commenter').href = `/@${comment['author']}`;
+            $(tmp).find('.meta-info').text(moment(comment['comment_on']).format('YYYY-MM-DD HH:mm:ss'));
+            $(tmp).find('.comment-content').text(comment['content']);
+            $('#comments').append(tmp);
+        });
+    },
+    error: function (error) {
+        console.log(error);
+    },
+    contentType: 'application/json',
+    dataType: 'json'
+});
+
+$('#submit-comment').click(function() {
+    let comment = $('#write-comment').val();
+    $.ajax({
+        type: 'POST',
+        url: `/api/comments?post_uri=${post_uri}`,
+        headers: {
+            'X-CSRFToken': csrf_token
+        },
+        data: JSON.stringify({content: comment}),
+        success: function() {
+            let tmp = document.getElementById('comment-template').content.cloneNode(true);
+            $(tmp).find('.commenter').text($('#user-setting-dropdown').text());
+            $(tmp).find('.commenter').href = `/@${comment['author']}`;
+            $(tmp).find('.meta-info').text(moment().format('YYYY-MM-DD'));
+            $(tmp).find('.comment-content').text(comment);
+            $('#comments').append(tmp);
+            $('#write-comment').val('');
+        },
+        error: function(error) {console.log(error);},
+        contentType: 'application/json',
+        dataType: 'json'
+    });
+});

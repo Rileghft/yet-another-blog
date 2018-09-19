@@ -20,11 +20,30 @@
 <input id="title-edit" class="form-control" style="display: none" type="text" placeholder="Title">
 <article id="article">
     <h1 id="title"></h1>
-    <span class="meta-info">created on </span><span class="meta-info" id="post-date"></span>
+    <a class="author" href="{{url_for('main.user_page', username=user.username)}}">{{user.username}}</a>
+    <span class="meta-info">posted on </span><span class="meta-info" id="post-date"></span>
     <div id="body">
     </div>
 </article>
 <input type="hidden" id="csrf_token" value="{{ csrf_token() }}" />
+<div class="comments-container">
+    <h1>Comments</h1>
+    <hr>
+    {% if user.is_authenticated %}
+    <div class="new-comment">
+        <textarea class="form-control" name="write-comment" id="write-comment" cols="20" rows="3" placeholder="leave a comment"></textarea>
+        <button class="btn btn-success" id="submit-comment" type="submit">submit comment</button>
+    </div>
+    {% endif %}
+    <div class="comments" id="comments"></div>
+</div>
+<template id="comment-template">
+    <div class="comment card">
+        <div><a class="commenter author" href="#"></a></div>
+        <div><span class="meta-info"></span></div>
+        <p class="comment-content"></p>
+    </div>
+</template>
 {% endblock %}
 {% block script %}
 <script src="{{url_for('static', filename='js/editor.js')}}"></script>

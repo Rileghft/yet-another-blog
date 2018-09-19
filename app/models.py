@@ -96,6 +96,8 @@ login_manager.anonymous_user = AnonymousUser
 
 
 class Post(db.Model):
+    __tablename__ = 'post'
+
     post_uuid = Column(UUID(as_uuid=True), primary_key=True)
     post_uri = Column(String(120), unique=True, nullable=False)
     author_uuid = Column(UUID(as_uuid=True), ForeignKey('user.user_uuid'), nullable=False)
@@ -105,6 +107,7 @@ class Post(db.Model):
     body_text = Column(Text)
     created_on = Column(TIMESTAMP, default=datetime.utcnow)
     updated_on = Column(TIMESTAMP, default=datetime.utcnow)
+    comments = relationship('Comment', backref='post', cascade='delete', lazy='dynamic')
 
 
     def to_json(self):
@@ -134,3 +137,30 @@ class Post(db.Model):
             body_text=html.escape(data['body_text'], quote=False)
         )
         return post
+
+
+class Comment(db.Model):
+    __tablename__ = 'comment'
+
+    comment_uuid = Column(UUID(as_uuid=True), primary_key=True)
+    author_uuid = Column(UUID(as_uuid=True), ForeignKey('user.user_uuid'), nullable=False)
+    author = relationship('User', lazy='immediate')
+    post_uuid = Column(UUID(as_uuid=True), ForeignKey('post.post_uuid'), index=True, nullable=False)
+    content = Column(Text)
+    comment_on = Column(TIMESTAMP, default=datetime.utcnow)
+
+    def to_json(self):
+        return {
+            'author': self.author.username,
+            'comment_on': self.comment_on,
+            'content': self.content
+        }
+
+    @staticmethod
+    def from_json(data, post, author):
+        return Comment(
+            comment_uuid=uuid.uuid4(),
+            author_uuid=author.user_uuid,
+            post_uuid=post.post_uuid,
+            content=html.escape(data['content'], quote=False)
+        )

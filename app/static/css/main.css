@@ -44,6 +44,31 @@
     margin: 0px 10px 10px 0px;
 }
 
+.comments-container {
+    margin-top: 20px
+}
+
+.new-comment {
+    margin: 20px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+#write-comment {
+    margin-right: 10px;
+    flex-grow: 9;
+}
+
+#submit-comment {
+    flex-grow: 1;
+}
+
+.comment {
+    padding: 10px;
+    margin: 10px 0px 0px 20px;
+    width 80%;
+}
+
 /*_posts*/
 #article {
     height: 600px;
