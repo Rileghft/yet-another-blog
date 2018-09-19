@@ -3,13 +3,20 @@
 from flask import current_app
 from app import db, login_manager
 from app.config import config
-from sqlalchemy import Column, CHAR, String, Boolean, TIMESTAMP
+from sqlalchemy import Column, CHAR, String, Text, Boolean, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 from flask_login import UserMixin, AnonymousUserMixin
 from datetime import datetime
 import bcrypt
 import hmac
+import uuid
 from itsdangerous import TimedSerializer, BadTimeSignature
+import arrow
+import json
+from hashlib import sha256
+from urllib.parse import quote
+import html
 import arrow
 
 
@@ -86,3 +93,44 @@ class AnonymousUser(AnonymousUserMixin):
 
 
 login_manager.anonymous_user = AnonymousUser
+
+
+class Post(db.Model):
+    post_uuid = Column(UUID(as_uuid=True), primary_key=True)
+    post_uri = Column(String(120), unique=True, nullable=False)
+    author_uuid = Column(UUID(as_uuid=True), ForeignKey('user.user_uuid'), nullable=False)
+    author = relationship('User', lazy='joined')
+    title = Column(String(100), nullable=False)
+    body = Column(Text)
+    body_text = Column(Text)
+    created_on = Column(TIMESTAMP, default=datetime.utcnow)
+    updated_on = Column(TIMESTAMP, default=datetime.utcnow)
+
+
+    def to_json(self):
+        return {
+            'title': self.title,
+            'body': json.loads(self.body),
+            'body_text': self.body_text,
+            'created_on': arrow.get(self.created_on).timestamp,
+            'updated_on': arrow.get(self.updated_on).timestamp
+        }
+
+    @staticmethod
+    def from_json(data, author_uuid):
+        if 'title' not in data or 'body' not in data\
+                or not data['title'] or not data['body']:
+            return None
+        now = str(datetime.utcnow())
+        postfix = data['title'] + author_uuid.hex + now
+        hash_postfix = sha256(postfix.encode('utf-8')).hexdigest()[:20]
+        post_uri = quote(data['title'].replace(' ', '-') + '-' + hash_postfix)
+        post = Post(
+            post_uuid=uuid.uuid4().hex,
+            author_uuid=author_uuid,
+            post_uri=post_uri,
+            title=html.escape(data['title']),
+            body=html.escape(json.dumps(data['body']), quote=False),
+            body_text=html.escape(data['body_text'], quote=False)
+        )
+        return post

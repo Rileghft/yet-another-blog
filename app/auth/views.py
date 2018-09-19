@@ -15,7 +15,7 @@ from datetime import datetime
 @auth.route('unconfirm')
 @login_required
 def unconfirm():
-    return render_template('auth/unconfirm.html', user=current_user)
+    return render_template('auth/unconfirm.html')
 
 
 @auth.route('login', methods=['GET', 'POST'])
@@ -32,7 +32,7 @@ def login():
             return redirect(request.args.get('next') or url_for('main.index'))
         else:
             flash('Invalid email or password.')
-    return render_template('auth/login.html', form=form, user=current_user)
+    return render_template('auth/login.html', form=form)
 
 
 @auth.route('register', methods=['POST'])
@@ -81,7 +81,7 @@ def confirm(token):
 @login_required
 def resend_confirmation():
     if not current_user.confirmed:
-        send_email([current_user.email], 'confirm your account', 'auth/mail/confirm', user=current_user, token=current_user.generate_confirmation_token())
+        send_email([current_user.email], 'confirm your account', 'auth/mail/confirm')
         flash('Please check your email and confirm your account.')
     else:
         flash('Your account is already confirmed.')

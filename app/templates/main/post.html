@@ -1,0 +1,31 @@
+<!-- app/templates/main/post.html -->
+
+{% extends "base.html" %}
+
+{% block header %}
+<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+<link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+{% endblock %}
+
+{% block content %}
+{% if user.user_uuid == author %}
+<div class="post-toolbar">
+    <button id="edit" class="btn">Edit</button>
+    <button id="view" class="btn" style="display: none">View article</button>
+    <button id="save" class="btn btn-primary" style="display: none" type="submit">Save</button>
+    <button id="delete" class="btn btn-danger">Delete</button>
+</div>
+{% endif %}
+<input id="title-edit" class="form-control" style="display: none" type="text" placeholder="Title">
+<article id="article">
+    <h1 id="title"></h1>
+    <span class="meta-info">created on </span><span class="meta-info" id="post-date"></span>
+    <div id="body">
+    </div>
+</article>
+<input type="hidden" id="csrf_token" value="{{ csrf_token() }}" />
+{% endblock %}
+{% block script %}
+<script src="{{url_for('static', filename='js/editor.js')}}"></script>
+{% endblock script %}

@@ -1,0 +1,37 @@
+<!-- app/templates/main/user.html -->
+
+{% extends "base.html" %}
+{% import "main/_macro.html" as macros %}
+
+{% block header%}
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+{% endblock %}
+
+{% block title %}{{visit_user.username}}{% endblock %}
+
+{% block content %}
+{%with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning">
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+<div class="user">
+    <div class="username">
+        <span>{{visit_user.username}}</span>
+    </div>
+    <div class="about">
+        <p>Welcome to {{visit_user.username}}'s blog.</p>
+    </div>
+    <div class="join">
+        <span>join blog since {{visit_user.register_on.strftime('%Y/%m/%d')}}</span>
+    </div>
+</div>
+{% include "main/_posts.html" %}
+{% if pagination %}
+    {{macros.pagination_widget('main.user_page', pagination, username=user.username)}}
+{% endif %}
+{% endblock %}

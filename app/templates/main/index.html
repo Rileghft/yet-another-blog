@@ -1,6 +1,13 @@
 <!-- app/templates/index.html -->
 
 {% extends "base.html" %}
+{% import "main/_macro.html" as macros %}
+
+{% block header %}
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+{% endblock %}
+
 {% block content %}
-<h1>Home Page</h1>
+{% include "main/_posts.html" %}
+{{macros.pagination_widget('main.index', pagination)}}
 {% endblock %}

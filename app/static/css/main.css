@@ -1,0 +1,107 @@
+#body {
+    border: 0px;
+}
+
+/*user*/
+.user {
+    margin: 50px;
+}
+
+.username {
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 48px;
+}
+
+.about {
+    margin-bottom: 5px;
+}
+
+.join {
+    color: grey;
+    margin: 3px 0px 5px 0px;
+}
+
+.post-on {
+    margin-left: 10px;
+}
+
+.pagination-bar {
+    margin-top: 20px;
+    margin-left: 40px;
+}
+
+.pagination > a {
+    color: black;
+}
+/*post*/
+.post-toolbar {
+    padding: 10px;
+    margin: 10px 0px 10px 0px;
+}
+
+.post-toolbar > button {
+    margin: 0px 10px 10px 0px;
+}
+
+/*_posts*/
+#article {
+    height: 600px;
+    padding: 20px;
+    border: 1px solid lightgray;
+    margin-top: 20px;
+    box-shadow: rgb(223, 223, 223) 0px 1px 5px 2px;
+}
+
+.ql-container {
+    height: 90%;
+}
+
+.posts {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.post {
+    margin: 20px;
+    padding: 10px;
+    width: 50%;
+}
+
+.post-header {
+    flex-grow: 1;
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid lightgrey;
+    height: auto;
+}
+
+.post-content {
+    flex-grow: 9;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.title > a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+.author, .author:hover, .author:active {
+    color: black;
+}
+
+.meta-info {
+    color: grey;
+}
+
+.summary {
+    color: grey;
+}
