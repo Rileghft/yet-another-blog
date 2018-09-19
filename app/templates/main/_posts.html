@@ -1,0 +1,22 @@
+<!-- app/templates/main/_posts.html -->
+
+<div class="posts">
+    {% for post in posts %}
+    <div class="card post">
+        <div class="card-body">
+            <div>
+                <a class="author" href="{{url_for('main.user_page', username=post.author.username,  _external=True)}}">{{post.author.username}}</a>
+                <span class="post-on">{{post.created_on.strftime('%Y-%m-%d')}}</span>
+            </div>
+            <h5 class="card-title title">
+                <a href="{{url_for('main.post', post_uri=post.post_uri, username=post.author.username, _external=True)}}">
+                    {{post.title}}
+                </a>
+            </h5>
+            <div>
+                <p class="summary">{% if post.body_text|length < 100 %}{{post.body_text}}{% else %}{{post.body_text[:100] + '...'}}{% endif %}</p>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>

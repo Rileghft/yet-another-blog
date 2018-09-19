@@ -1,0 +1,21 @@
+<!-- app/templates/main/post.html -->
+
+{% extends "base.html" %}
+
+{% block header %}
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet">
+<script src="https://cdn.quilljs.com/1.0.0/quill.js"></script>
+<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+{% endblock %}
+{% block content %}
+<div class="post-toolbar">
+    <button id="save" class="btn btn-primary" type="submit">Save</button>
+    <button id="discard" class="btn btn-danger" type="submit">Discard</button>
+    <input id="title-edit" class="form-control" type="text" placeholder="Title...">
+</div>
+<div id="editor"></div>
+<input type="hidden" id="csrf_token" value="{{ csrf_token() }}" />
+{% endblock %}
+{% block script %}
+<script src="{{url_for('static', filename='js/editor.js')}}"></script>
+{% endblock %}
