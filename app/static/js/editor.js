@@ -14,7 +14,7 @@ $('#save').click(function() {
         data: JSON.stringify({'title': title, 'body': content, 'body_text': content_text}),
         success: function(data) {
             is_saved = true;
-            let new_post_uri = data['post_uri'] || undefined;
+            let new_post_uri = encodeURI(data['post_uri']) || undefined;
             if (post_uri !== new_post_uri) {
                 let re = new RegExp(`(${post_uri}|new-post)`);
                 new_href = location.href.replace(re, new_post_uri);
