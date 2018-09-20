@@ -74,7 +74,6 @@ class User(UserMixin, db.Model):
         try:
             msg = serializer.loads(token)
             now = arrow.utcnow().timestamp
-            current_app.logger.info(msg)
             if msg.get('confirm_register') == self.user_uuid.hex \
                     and msg.get('expired_on', now) > now:
                 self.confirmed = True
@@ -86,6 +85,40 @@ class User(UserMixin, db.Model):
         except BadTimeSignature:
             current_app.logger.error('User %s: failed to confirm', self.user_uuid.hex)
         return False
+    
+    def generate_email_confirmation_token(self, new_email, expiration=600):
+        serializer = TimedSerializer(config['secret_key'])
+        return serializer.dumps({
+            'user_uuid': self.user_uuid.hex,
+            'new_email': new_email,
+            'expired_on': arrow.utcnow().timestamp + expiration
+        })
+    
+    def confirm_email_change(self, token):
+        serializer = TimedSerializer(config['secret_key'])
+        try:
+            msg = serializer.loads(token)
+            now = arrow.utcnow().timestamp
+            if msg.get('user_uuid') == self.user_uuid.hex\
+                    and msg.get('expired_on', now) > now:
+                self.email = msg['new_email'] if 'new_email' in msg else self.email
+                db.session.add(self)
+                db.session.commit()
+                return True
+        except BadTimeSignature:
+            current_app.logger.error('User %s: failed to confirm email change', self.user_uuid.hex)
+        return False
+
+
+    
+    def reset_password(self, old_password, new_password):
+        hash_password = bcrypt.hashpw(old_password.encode('utf-8'), self.salt.encode('utf-8'))
+        is_valid_password = (self.password_hash == hmac.HMAC(config['secret_key'].encode('utf-8'), msg=hash_password, digestmod=config['security']['digestmod']).hexdigest())
+        if not is_valid_password:
+            return False
+        self.password = new_password
+        return True
+
 
 
 class AnonymousUser(AnonymousUserMixin):

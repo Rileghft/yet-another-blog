@@ -16,3 +16,13 @@ class RegisterForm(FlaskForm):
     email = StringField('email', validators=[InputRequired(), Email(message='Invalid email format')])
     password = PasswordField('password', validators=[InputRequired(), EqualTo('confirm_password', message='password doesn\'t match confirm password')])
     confirm_password = PasswordField('confirm password', validators=[InputRequired()])
+
+
+class EmailChangeForm(FlaskForm):
+    email = StringField('email', validators=[InputRequired(), Email(message='Invalid email format')])
+
+
+class PasswordChangeForm(FlaskForm):
+    old_password = PasswordField('old_password', validators=[InputRequired()])
+    new_password = PasswordField('new_password', validators=[InputRequired(), EqualTo('confirm_password', message='password doesn\'t match confirm password')])
+    confirm_password = PasswordField('confirm password', validators=[InputRequired()])

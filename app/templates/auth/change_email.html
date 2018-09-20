@@ -1,0 +1,14 @@
+<!-- app/templates/auth/change_email.html -->
+
+{% extends "base.html" %}
+
+{% block content %}
+<form id="change-email" action="{{url_for('auth.change_email')}}" method="POST">
+    <div class="form-group">
+        <label for="new-email">New email</label>
+        <input type="email" class="form-control" id="new-email" name="email" placeholder="Enter new email">
+    </div>
+    <input type="hidden" id="csrf-token" name="csrf_token" value="{{csrf_token()}}">
+    <button type="submit" class="btn btn-primary">Change email</button>
+</form>
+{% endblock %}
