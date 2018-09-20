@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Confirm Your new password</title>
+</head>
+<body>
+    <p>Dear {{user.username}},</p>
+    <p>You change Yet Another Blog account email at {{ts.strftime('%Y-%m-%d %H:%M:%S')}}.</p>
+    <p>If you didn't change your email, please ignore this email.</p>
+    <p>Click the following link to confirm your email change: <a href="{{url_for('auth.confirm_email_change', token=token, _external=True)}}">{{url_for('auth.confirm_email_change', token=token, _external=True)}}</a></p>
+    <p>Sincerely,</p>
+    <p>Yet Another Blog Team</p>
+</body>
+</html>

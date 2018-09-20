@@ -39,6 +39,8 @@
                     <div class="dropdown">
                         <button class="btn btn-dark dropdown-toggle" id="user-setting-dropdown" data-toggle="dropdown" aria-expanded="false">{{user.username}}</button>
                         <div class="dropdown-menu" aria-labelledby="user-setting-dropdown">
+                            <a href="{{url_for('auth.change_password')}}" class="dropdown-item">Change password</a>
+                            <a href="{{url_for('auth.change_email')}}" class="dropdown-item">Change email</a>
                         </div>
                     </div>
                 </li>

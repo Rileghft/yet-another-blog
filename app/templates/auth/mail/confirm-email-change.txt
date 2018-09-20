@@ -1,0 +1,8 @@
+Dear {{user.username}},
+
+You change Yet Another Blog account email at {{ts.strftime('%Y-%m-%d %H:%M:%S')}}.
+If you didn't change your email, please ignore this email.
+Click the following link to confirm your email change: <a href="{{url_for('auth.confirm_email_change', token=token, _external=True)}}">{{url_for('auth.confirm_email_change', token=token, _external=True)}}</a>
+
+Sincerely,
+Yet Another Blog Team
