@@ -39,7 +39,7 @@
     </div>
 {% include "main/_posts.html" %}
 {% if pagination %}
-    {{macros.pagination_widget('main.user_page', pagination, username=user.username)}}
+    {{macros.pagination_widget('main.user_page', pagination, username=user.username, search=search_keywords)}}
 {% endif %}
 </div>
 {% endblock %}

@@ -17,7 +17,7 @@ def index():
         query = search(query, search_keywords.replace(' ', ' or '))
     pagination = query.paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('main/index.html', posts=posts, pagination=pagination)
+    return render_template('main/index.html', posts=posts, pagination=pagination, search_keywords=search_keywords)
 
 
 @main.route('/@<username>/')
@@ -32,7 +32,7 @@ def user_page(username):
         query = search(query, search_keywords.replace(' ', ' or '))
     pagination = query.paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
-    return render_template('main/user.html', visit_user=user, posts=posts, pagination=pagination)
+    return render_template('main/user.html', visit_user=user, posts=posts, pagination=pagination, search_keywords=search_keywords)
 
 
 @main.route('/@<username>/<post_uri>')
