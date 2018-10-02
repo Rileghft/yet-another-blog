@@ -16,6 +16,6 @@
         </form>
     </div>
     {% include "main/_posts.html" %}
-    {{macros.pagination_widget('main.index', pagination)}}
+    {{macros.pagination_widget('main.index', pagination, search=search_keywords)}}
 </div>
 {% endblock %}
