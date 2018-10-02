@@ -3,6 +3,7 @@
 from . import main
 from flask import render_template, current_app, flash, abort, request
 from flask_login import current_user, login_required
+from sqlalchemy_searchable import search
 from app.models import Post, User
 from app.config import config
 
@@ -10,7 +11,11 @@ from app.config import config
 @main.route('/')
 def index():
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.join(Post.author).order_by(Post.created_on.desc()).paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
+    search_keywords = request.args.get('search', '').strip()
+    query = Post.query.join(Post.author).order_by(Post.created_on.desc())
+    if search_keywords:
+        query = search(query, search_keywords.replace(' ', ' or '))
+    pagination = query.paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
     return render_template('main/index.html', posts=posts, pagination=pagination)
 
@@ -21,7 +26,11 @@ def user_page(username):
     if not user:
         abort(404)
     page = request.args.get('page', 1, type=int)
-    pagination = Post.query.filter_by(author_uuid=user.user_uuid).order_by(Post.created_on.desc()).paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
+    search_keywords = request.args.get('search', '').strip()
+    query = Post.query.filter_by(author_uuid=user.user_uuid).order_by(Post.created_on.desc())
+    if search_keywords:
+        query = search(query, search_keywords.replace(' ', ' or '))
+    pagination = query.paginate(page, per_page=config['POSTS_PER_PAGE'], error_out=False)
     posts = pagination.items
     return render_template('main/user.html', visit_user=user, posts=posts, pagination=pagination)
 

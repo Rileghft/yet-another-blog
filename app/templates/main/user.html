@@ -30,8 +30,16 @@
         <span>join blog since {{visit_user.register_on.strftime('%Y/%m/%d')}}</span>
     </div>
 </div>
+<div>
+    <div class="search-bar">
+        <form class="form-inline" action="{{url_for('main.user_page', username=visit_user.username)}}" method="get">
+            <input class="form-control" type="search" name="search" id="search" placeholder="search title or content">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
 {% include "main/_posts.html" %}
 {% if pagination %}
     {{macros.pagination_widget('main.user_page', pagination, username=user.username)}}
 {% endif %}
+</div>
 {% endblock %}
