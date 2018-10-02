@@ -129,11 +129,6 @@ class AnonymousUser(AnonymousUserMixin):
 
 login_manager.anonymous_user = AnonymousUser
 
-
-class PostQuery(BaseQuery, SearchQueryMixin):
-    pass
-
-
 class Post(db.Model):
     __tablename__ = 'post'
 
