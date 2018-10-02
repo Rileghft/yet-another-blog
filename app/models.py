@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 from flask import current_app
+from flask_sqlalchemy import BaseQuery
 from app import db, login_manager
 from app.config import config
 from sqlalchemy import Column, CHAR, String, Text, Boolean, TIMESTAMP, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
+from sqlalchemy_utils.types import TSVectorType
+from sqlalchemy_searchable import SearchQueryMixin
 from flask_login import UserMixin, AnonymousUserMixin
 from datetime import datetime
 import bcrypt
@@ -110,7 +113,6 @@ class User(UserMixin, db.Model):
         return False
 
 
-    
     def reset_password(self, old_password, new_password):
         hash_password = bcrypt.hashpw(old_password.encode('utf-8'), self.salt.encode('utf-8'))
         is_valid_password = (self.password_hash == hmac.HMAC(config['secret_key'].encode('utf-8'), msg=hash_password, digestmod=config['security']['digestmod']).hexdigest())
@@ -128,6 +130,10 @@ class AnonymousUser(AnonymousUserMixin):
 login_manager.anonymous_user = AnonymousUser
 
 
+class PostQuery(BaseQuery, SearchQueryMixin):
+    pass
+
+
 class Post(db.Model):
     __tablename__ = 'post'
 
@@ -141,6 +147,7 @@ class Post(db.Model):
     created_on = Column(TIMESTAMP, default=datetime.utcnow)
     updated_on = Column(TIMESTAMP, default=datetime.utcnow)
     comments = relationship('Comment', backref='post', cascade='delete', lazy='dynamic')
+    search_vector = Column(TSVectorType('title', 'body_text'))
 
 
     def to_json(self):

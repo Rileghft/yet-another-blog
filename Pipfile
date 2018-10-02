@@ -20,6 +20,7 @@ flask-wtf = "*"
 flask-migrate = "*"
 flask-mail = "*"
 itsdangerous = "*"
+sqlalchemy-searchable = "*"
 
 [dev-packages]
 pytest = "*"

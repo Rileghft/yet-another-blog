@@ -5,9 +5,18 @@
 
 {% block header %}
 <link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
+<script src="{{url_for('static', filename='js/main.js')}}"></script>
 {% endblock %}
 
 {% block content %}
-{% include "main/_posts.html" %}
-{{macros.pagination_widget('main.index', pagination)}}
+<div>
+    <div class="search-bar">
+        <form class="form-inline" action="{{url_for('main.index')}}" method="get">
+            <input class="form-control" type="search" name="search" id="search" placeholder="search title or content">
+            <button type="submit" class="btn">Search</button>
+        </form>
+    </div>
+    {% include "main/_posts.html" %}
+    {{macros.pagination_widget('main.index', pagination)}}
+</div>
 {% endblock %}

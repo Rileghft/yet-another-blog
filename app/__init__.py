@@ -7,6 +7,7 @@ from flask_cors import CORS
 from flask_wtf import CSRFProtect
 from flask_login import LoginManager
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy_searchable import make_searchable
 from flask_migrate import Migrate
 from flask_mail import Mail
 
@@ -31,6 +32,8 @@ def create_app():
     app.config['MAIL_PASSWORD'] = os.environ['APP_MAIL_PASSWORD']
     login_manager.init_app(app)
     db.init_app(app)
+    make_searchable(db.metadata)
+    db.create_all(app=app)
     mail.init_app(app)
     migrate.init_app(app, db)
     from .auth import auth
