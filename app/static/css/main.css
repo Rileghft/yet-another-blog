@@ -7,6 +7,10 @@ html, body {
     border: 0px;
 }
 
+.container {
+    min-height: 100%;
+}
+
 .footer {
     background-color: gray;
     left: 0;
