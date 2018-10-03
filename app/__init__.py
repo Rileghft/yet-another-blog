@@ -23,6 +23,7 @@ def create_app():
     CORS(app)
     CSRFProtect(app)
     config.init(os.environ['CONFIG_PATH'])
+    app.config['SERVER_NAME'] = config.config['server_name']
     app.config['SECRET_KEY'] = config.config['secret_key']
     app.config['SQLALCHEMY_DATABASE_URI'] = config.config['db_url']
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -33,7 +34,6 @@ def create_app():
     login_manager.init_app(app)
     db.init_app(app)
     make_searchable(db.metadata)
-    db.create_all(app=app)
     mail.init_app(app)
     migrate.init_app(app, db)
     from .auth import auth
