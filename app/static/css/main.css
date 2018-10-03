@@ -1,5 +1,22 @@
+html, body {
+    min-height: 100% !important;
+    height: 100%;
+}
+
 #body {
     border: 0px;
+}
+
+.footer {
+    background-color: gray;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+
+.footer > div > a {
+    text-decoration: none;
+    color: black;
 }
 
 /*index*/
