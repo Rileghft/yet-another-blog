@@ -148,6 +148,9 @@ $.ajax({
 
 $('#submit-comment').click(function() {
     let comment = $('#write-comment').val();
+    if (comment === '') {
+        return ;
+    }
     $.ajax({
         type: 'POST',
         url: `/api/comments?post_uri=${post_uri}`,

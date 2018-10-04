@@ -23,6 +23,8 @@ def new_comment():
     if not post:
         return jsonify({'success': False}), 404
     data = request.get_json()
+    if not data.get('content'):
+        return jsonify({'success': False}), 400
     new_comment = Comment.from_json(data, post, current_user)
     db.session.add(new_comment)
     db.session.commit()
