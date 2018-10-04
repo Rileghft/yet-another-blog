@@ -3,11 +3,16 @@
 {% extends "base.html" %}
 {% import "main/_macro.html" as macros %}
 
-{% block header %}
-<link rel="stylesheet" href="{{url_for('static', filename='css/main.css')}}">
-{% endblock %}
-
 {% block content %}
+{%with messages = get_flashed_messages() %}
+    {% if messages %}
+        <div class="alert alert-warning">
+            {% for msg in messages %}
+                <p>{{msg}}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
 <div>
     <div class="search-bar">
         <form class="form-inline" action="{{url_for('main.index')}}" method="get">
