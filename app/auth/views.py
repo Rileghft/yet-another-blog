@@ -26,6 +26,9 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         if user is not None and user.verify_password(form.password.data):
+            user.last_login = datetime.now()
+            db.session.add(user)
+            db.session.commit()
             login_user(user, form.remember_me.data)
             if not user.confirmed:
                 return redirect(url_for('auth.unconfirm'))
@@ -53,7 +56,7 @@ def register():
                 db.session.add(new_user)
                 db.session.commit()
                 send_email([new_user.email], 'confirm your account', 'auth/mail/confirm', user=new_user, token=new_user.generate_confirmation_token())
-                flash('Please check your email and confirm your account.')
+                flash('login, check your email and confirm your account.')
             except Exception as e:
                 flash('register failed.')
                 current_app.logger.exception(str(e))
@@ -71,6 +74,7 @@ def confirm(token):
         user.confirmed_on = datetime.utcnow()
         db.session.add(user)
         db.session.commit()
+        flash('your account is confirmed.')
         return redirect(url_for('main.index'))
     else:
         flash('failed to confirm your account, resend confirmation and try again.')
